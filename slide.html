@@ -77,11 +77,11 @@ function createInfiniteSlider(trackId, speed = 0.5, direction = 'left') {
   const items = Array.from(track.children);
   
   window.addEventListener('load', () => {
-    // Get total width of one full loop
     const originalWidth = track.scrollWidth;
+    const minTrackWidth = 3000; // Set a safe minimum track width for all devices
 
-    // Clone items until track width > 2x container width
-    while (track.scrollWidth < container.offsetWidth * 2) {
+    // Clone items until track width > 2x container width *or* minTrackWidth
+    while (track.scrollWidth < Math.max(container.offsetWidth * 2, minTrackWidth)) {
       items.forEach(item => {
         const clone = item.cloneNode(true);
         track.appendChild(clone);
@@ -91,7 +91,7 @@ function createInfiniteSlider(trackId, speed = 0.5, direction = 'left') {
     let position = 0;
 
     function animate() {
-      if(direction === 'left') {
+      if (direction === 'left') {
         position -= speed;
         if (Math.abs(position) >= originalWidth) {
           position = 0;
@@ -110,6 +110,7 @@ function createInfiniteSlider(trackId, speed = 0.5, direction = 'left') {
     animate();
   });
 }
+
 
 
 // Run both sliders
