@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>True Infinite Slider</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      margin: 40px;
+    }
+
+    .slider-container {
+      overflow: hidden;
+      border: 1px solid #ddd;
+      background: white;
+      margin-bottom: 30px;
+      position: relative;
+      height: 60px;
+    }
+
+    .slider-track {
+      display: flex;
+      position: absolute;
+      left: 0;
+      top: 0;
+      will-change: transform;
+    }
+
+    .slide-item {
+      flex: 0 0 auto;
+      padding: 10px 20px;
+      margin: 0 10px;
+      background: #e2e8f0;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Slider -->
+<div class="slider-container">
+  <div class="slider-track" id="track1">
+    <div class="slide-item">Smarter Employee Benefits</div>
+    <div class="slide-item">Better Health Plans</div>
+    <div class="slide-item">Lower Premiums</div>
+    <div class="slide-item">Flexible Options</div>
+    <div class="slide-item">Global Coverage</div>
+    <div class="slide-item">Top-Rated Networks</div>
+    <div class="slide-item">Comprehensive Benefits</div>
+    <div class="slide-item">Transparent Billing</div>
+  </div>
+</div>
+
+<!-- Bottom Slider -->
+<div class="slider-container">
+  <div class="slider-track" id="track2">
+    <div class="slide-item">Smarter Employee Benefits</div>
+    <div class="slide-item">Better Health Plans</div>
+    <div class="slide-item">Lower Premiums</div>
+    <div class="slide-item">Flexible Options</div>
+    <div class="slide-item">Global Coverage</div>
+    <div class="slide-item">Top-Rated Networks</div>
+    <div class="slide-item">Comprehensive Benefits</div>
+    <div class="slide-item">Transparent Billing</div>
+  </div>
+</div>
+
+<script>
+function createInfiniteSlider(trackId, speed = 0.5, direction = 'left') {
+  const track = document.getElementById(trackId);
+  const container = track.parentElement;
+  const items = Array.from(track.children);
+  
+  window.addEventListener('load', () => {
+    // Get total width of one full loop
+    const originalWidth = track.scrollWidth;
+
+    // Clone items until track width > 2x container width
+    while (track.scrollWidth < container.offsetWidth * 2) {
+      items.forEach(item => {
+        const clone = item.cloneNode(true);
+        track.appendChild(clone);
+      });
+    }
+
+    let position = 0;
+
+    function animate() {
+      if(direction === 'left') {
+        position -= speed;
+        if (Math.abs(position) >= originalWidth) {
+          position = 0;
+        }
+      } else {
+        position += speed;
+        if (position >= 0) {
+          position = -originalWidth;
+        }
+      }
+
+      track.style.transform = `translateX(${position}px)`;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  });
+}
+
+
+// Run both sliders
+createInfiniteSlider('track1', 1, 'left');
+createInfiniteSlider('track2', 1, 'right');
+</script>
+
+</body>
+</html>
